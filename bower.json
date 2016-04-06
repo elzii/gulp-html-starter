@@ -1,0 +1,34 @@
+{
+  "name": "uww-mym",
+  "version": "0.0.0",
+  "homepage": "https://github.com/fiftyandfiftyorg/uww-mym",
+  "authors": [
+    "Alexander Zizzo <alex@fiftyandfifty.org>"
+  ],
+  "moduleType": [
+    "amd"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "components/",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "font-awesome": "4.3.0",
+    "animate.css": "*",
+    "jquery": "*",
+    "prefix-free": "gh-pages",
+    "wowjs": "*",
+    "object-fit": "~0.4.1",
+    "flexslider": "*",
+    "contentful": "2.1.2",
+    "handlebars": "~4.0.5",
+    "store-js": "store.js#~1.3.20",
+    "bootstrap": "~3.3.6"
+  }
+}
