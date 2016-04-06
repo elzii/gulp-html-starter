@@ -90,6 +90,30 @@ var APP = (function () {
    */
   app.init = function () {
     
+
+    route('/', 'home', function () {});
+    route('/page1', 'template1', function () {
+      this.greeting = 'Hello world!';
+      this.moreText = 'Bacon ipsum...';
+      this.counter = 0;
+      this.$on('.my-button', 'click', function () {
+        this.counter += 1;
+        this.$refresh();
+      }.bind(this));
+    });
+    route('/page2', 'template2', function () {
+      this.heading = 'I\'m page two!';
+    });
+    route('*', 'error404', function () {});
+
+
+
+  }
+
+
+  app.routes = function() {
+
+    
   }
 
 

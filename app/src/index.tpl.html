@@ -11,15 +11,43 @@
       <a class="navbar-brand" href="#">
         <span>gulp-html-starter</span>
       </a>
+
+
     </div>
   </div>
 </div>
 
 
+
+
 <div id="wrap" style="padding-top:75px;">
   <div class="container">
 
-    <p>Container</p>
+  <ul>
+    <li><a href="#">Home</a></li>
+    <li><a href="#/page1">Page 1</a></li>
+    <li><a href="#/page2">Page 2</a></li>
+  </ul>
+  
+
+    <script type="text/html" id="home">
+      <h1>Router FTW!</h1>
+    </script>
+    <script type="text/html" id="template1">
+      <h1>Page 1: <%= greeting %></h1>
+      <p><%= moreText %></p>
+      <button class="my-button">Click me <%= counter %></button>
+    </script>
+    <script type="text/html" id="template2">
+      <h1>Page 2: <%= heading %></h1>
+      <p>Lorem ipsum...</p>
+    </script>
+    <script type="text/html" id="error404">
+      <h1>404 Not found</h1>
+    </script>
+
+
+    <div id="view"></div>
 
   </div>
 </div>
