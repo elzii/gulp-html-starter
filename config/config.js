@@ -11,6 +11,7 @@ var config = {
     src:      './app/src/',
     css:      './app/assets/css/',
     js:       './app/assets/js/',  
+    es6:      './app/assets/es6/',  
     partials: './app/partials/',
   },
   ports: {

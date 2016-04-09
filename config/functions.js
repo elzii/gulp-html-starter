@@ -1,4 +1,4 @@
-var gutil = require('gulp-util'),
+var gutil  = require('gulp-util'),
     tinylr = require('tiny-lr')()
 
 
@@ -7,7 +7,7 @@ var config = require('./config')
 /**
  * Tiny LR
  */
-tinylr.listen( config.ports.livereload )
+// tinylr.listen( config.ports.livereload )
 
 /**
  * Private Methods

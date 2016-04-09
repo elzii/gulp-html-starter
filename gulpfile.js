@@ -9,6 +9,8 @@ var gulp         = require('gulp'),
     sourcemaps   = require('gulp-sourcemaps'),
     gutil        = require('gulp-util'),
     uglify       = require('gulp-uglify'),
+    babel        = require('gulp-babel'),
+    sourcemaps   = require('gulp-sourcemaps'),
     path         = require('path'),
     fileinclude  = require('gulp-file-include'),
     tinylr;
@@ -108,6 +110,21 @@ gulp.task('partials', function() {
 
 
 /**
+ * TASK: Babel
+ */
+gulp.task('babel', function() {
+  return gulp.src('app/assets/es6/**/*.js')
+    .pipe(sourcemaps.init())
+    .pipe(babel({
+      presets: ['es2015']
+    }))
+    .pipe(sourcemaps.write('.'))
+    .pipe(gulp.dest('app/assets/js'));
+})
+
+
+
+/**
  * TASK: Uglify JS
  */
 gulp.task('uglify-js', function() {
@@ -162,12 +179,15 @@ gulp.task('watch', function() {
     config.paths.partials + '*.tpl.html',
   ], ['partials'])
   gulp.watch([ config.paths.css + '/**/*.css'], functions.notifyLiveReload)
+  gulp.watch([ config.paths.js + '/**/*.js'], functions.notifyLiveReload)
+  gulp.watch([ config.paths.es6 + '/**/*.js'], functions.notifyLiveReload)
 })
 
 gulp.task('default', [
   'express', 
   'livereload', 
   'styles', 
+  'babel', 
   'partials',
   'watch'
 ], function() {
