@@ -1,3 +1,10 @@
+/**
+ * Configuration
+ *
+ * paths
+ * ports
+ * options
+ */
 var config = {
   paths: {
     app:      './app/',
