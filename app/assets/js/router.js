@@ -62,8 +62,6 @@
         removeEventListeners();
         // Render route template with John Resig's template engine:
         el.innerHTML = tmpl(route.templateId, ctrl);
-
-        console.log( tmpl(route.templateId, ctrl) )
         addEventListeners();
       });
       // Trigger the first refresh:

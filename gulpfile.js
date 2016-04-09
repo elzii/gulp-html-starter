@@ -14,34 +14,8 @@ var gulp         = require('gulp'),
     tinylr;
 
 
-
-
-var contentful = require('contentful');
-
-
-
-
-
-// gulp.task('contentful', function() {
-  
-
-//   var client = contentful.createClient({
-//     accessToken : keys.contentful.playground.accessToken,
-//     space : keys.contentful.playground.space_id
-//   })  
-
-
-//   client.entry('6M9lbETeOQqiwKwsCO2qGU')
-//     .then(function (res, err) {
-
-//       var cityName = res.fields.cityName;
-
-//       console.log( cityName  )
-//     })
-
-  
-// })
-
+var config    = require('./config/config'),
+    functions = require('./config/functions');
 
 
 
@@ -53,22 +27,22 @@ var contentful = require('contentful');
  * options
  */
 
-var config = {
-  paths: {
-    app:      './app/',
-    src:      './app/src/',
-    css:      './app/assets/css/',
-    js:       './app/assets/js/',  
-    partials: './app/partials/',
-  },
-  ports: {
-    express: 4000,
-    livereload: 4002
-  },
-  options: {
-    minify_css: false
-  }
-}
+// var config = {
+//   paths: {
+//     app:      './app/',
+//     src:      './app/src/',
+//     css:      './app/assets/css/',
+//     js:       './app/assets/js/',  
+//     partials: './app/partials/',
+//   },
+//   ports: {
+//     express: 4000,
+//     livereload: 4002
+//   },
+//   options: {
+//     minify_css: false
+//   }
+// }
 
 
 
@@ -109,14 +83,14 @@ gulp.task('styles', function() {
   // Minify CSS
   if ( config.options.minify_css ) {
     return sass( config.paths.css, { style: 'expanded' })
-      .on('error', logError)
+      .on('error', functions.logError)
       .pipe(sourcemaps.init())
       .pipe(rename({suffix: '.min'}))
       .pipe(minifycss())
       .pipe(gulp.dest( config.paths.css ))
   } else {
     return sass( config.paths.css, { style: 'expanded' })
-      .on('error', logError)
+      .on('error', functions.logError)
       .pipe(sourcemaps.init())
       .pipe(gulp.dest( config.paths.css ))
   }
@@ -203,12 +177,12 @@ gulp.task('build', function() {
  * TASK: Watch
  */
 gulp.task('watch', function() {
-  gulp.watch([ config.paths.css + '/**/*.scss'], ['styles'], notifyLiveReload)
+  gulp.watch([ config.paths.css + '/**/*.scss'], ['styles'], functions.notifyLiveReload)
   gulp.watch([
     config.paths.src + '*.tpl.html',
     config.paths.partials + '*.tpl.html',
   ], ['partials'])
-  gulp.watch([ config.paths.css + '/**/*.css'], notifyLiveReload)
+  gulp.watch([ config.paths.css + '/**/*.css'], functions.notifyLiveReload)
 })
 
 gulp.task('default', [
@@ -225,59 +199,3 @@ gulp.task('default', [
 
 
 
-/**
- * Private Methods
- *
- * notifyLiveReload()
- * logError()
- * formatError()
- */
-function notifyLiveReload(event) {
-  var fileName = require('path').relative(__dirname + '/', event.path)
-
-  tinylr.changed({
-    body: {
-      files: [fileName]
-    }
-  })
-
-  // Get filename from path
-  var filename = event.path.match(/\/[^\/]+$/g)[0].replace('/', '')
-
-  // Logging
-  gutil.log( gutil.colors.black.bgGreen( ' ' + event.type.toUpperCase() + ' '), gutil.colors.yellow( filename ) )
-
-}
-
-/**
- * Log Error
- * 
- * @param  {Object} error 
- * @return {Object}  
- */
-function logError(error) {
-
-    var err = formatError(error)
-
-    // Logging
-    gutil.log( gutil.colors.bgRed(' ERROR '), gutil.colors.bgBlue( ' ' + err.plugin + ' ' ), gutil.colors.black.bgWhite( ' ' + err.message + ' ' ) )
-    gutil.beep()
-
-    this.emit('end')
-
-    function formatError(obj) {
-
-      var obj     = obj || {},
-          msg     = obj.message || obj[0],
-          plugin  = obj.plugin || null
-
-      // clean up
-      msg = msg.replace('error ', '')
-
-      return {
-        message: msg,
-        plugin : plugin
-      }
-
-    }
-}
