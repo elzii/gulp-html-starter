@@ -11,6 +11,7 @@
     "gulp": "*",
     "gulp-autoprefixer": "*",
     "gulp-babel": "^6.1.2",
+    "gulp-browserify": "^0.5.1",
     "gulp-callback": "0.0.3",
     "gulp-compass": "*",
     "gulp-compile-handlebars": "^0.6.1",

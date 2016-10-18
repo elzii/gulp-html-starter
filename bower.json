@@ -19,16 +19,16 @@
     "tests"
   ],
   "dependencies": {
-    "font-awesome": "4.3.0",
     "animate.css": "*",
-    "jquery": "*",
-    "prefix-free": "gh-pages",
-    "wowjs": "*",
-    "object-fit": "~0.4.1",
-    "flexslider": "*",
+    "bootstrap": "~3.3.6",
     "contentful": "2.1.2",
+    "flexslider": "*",
+    "font-awesome": "4.3.0",
     "handlebars": "~4.0.5",
+    "jquery": "*",
+    "object-fit": "~0.4.1",
+    "prefix-free": "gh-pages",
     "store-js": "store.js#~1.3.20",
-    "bootstrap": "~3.3.6"
+    "wowjs": "*"
   }
 }

@@ -10,6 +10,7 @@ var gulp         = require('gulp'),
     gutil        = require('gulp-util'),
     uglify       = require('gulp-uglify'),
     babel        = require('gulp-babel'),
+    browserify   = require('gulp-browserify'),
     sourcemaps   = require('gulp-sourcemaps'),
     path         = require('path'),
     fileinclude  = require('gulp-file-include'),
@@ -17,7 +18,7 @@ var gulp         = require('gulp'),
 
 
 var config    = require('./config/config'),
-    functions = require('./config/functions');
+    log       = require('./config/log');
 
 
 
@@ -29,27 +30,41 @@ var config    = require('./config/config'),
 
 
 /**
- * TASK: Express & LiveReload
+ * -----------------------------------------
+ * TASK: Express
+ * -----------------------------------------
  */
 gulp.task('express', function() {
   var express   = require('express'),
       app       = express()
 
+  // USE
   app.use(require('connect-livereload')({ port: config.ports.livereload }))
   app.use(express.static(__dirname + '/app'))
 
   // LISTEN
   app.listen( config.ports.express )
 
+
   gutil.log( gutil.colors.black.bgYellow( ' EXPRESS SERVER RUNNING ' ), gutil.colors.bgCyan.black( ' http://localhost:' + config.ports.express + ' ') )
 })
 
+
+
+
+/**
+ * -----------------------------------------
+ * TASK: Live Reload
+ * -----------------------------------------
+ */
 gulp.task('livereload', function (event) {
   tinylr = require('tiny-lr')()
   tinylr.listen( config.ports.livereload )
 
   gutil.log( gutil.colors.black.bgMagenta( ' LIVERELOAD ' ), gutil.colors.bgCyan.black( ' http://localhost:' + config.ports.livereload + ' ') )
 })
+
+
 
 
 
@@ -64,14 +79,14 @@ gulp.task('styles', function() {
   // Minify CSS
   if ( config.options.minify_css ) {
     return sass( config.paths.css, { style: 'expanded' })
-      .on('error', functions.logError)
+      .on('error', log.logError)
       .pipe(sourcemaps.init())
       .pipe(rename({suffix: '.min'}))
       .pipe(minifycss())
       .pipe(gulp.dest( config.paths.css ))
   } else {
     return sass( config.paths.css, { style: 'expanded' })
-      .on('error', functions.logError)
+      .on('error', log.logError)
       .pipe(sourcemaps.init())
       .pipe(gulp.dest( config.paths.css ))
   }
@@ -117,6 +132,10 @@ gulp.task('babel', function() {
     .pipe(sourcemaps.init())
     .pipe(babel({
       presets: ['es2015']
+    }))
+    .pipe(browserify({
+      insertGlobals : true,
+      debug : true
     }))
     .pipe(sourcemaps.write('.'))
     .pipe(gulp.dest('app/assets/js'));
@@ -173,14 +192,36 @@ gulp.task('build', function() {
  * TASK: Watch
  */
 gulp.task('watch', function() {
-  gulp.watch([ config.paths.css + '/**/*.scss'], ['styles'], functions.notifyLiveReload)
-  gulp.watch([
-    config.paths.src + '*.tpl.html',
-    config.paths.partials + '*.tpl.html',
-  ], ['partials'])
-  gulp.watch([ config.paths.css + '/**/*.css'], functions.notifyLiveReload)
-  gulp.watch([ config.paths.js + '/**/*.js'], functions.notifyLiveReload)
-  gulp.watch([ config.paths.es6 + '/**/*.js'], functions.notifyLiveReload)
+
+  var scss = gulp.watch([ config.paths.css + '/**/*.scss' ], ['styles'])
+      scss.on('change', function(event) {
+        log.notifyLiveReload(tinylr, event)
+      })
+
+  // HTML
+  var html = gulp.watch( [config.paths.src + '/**/*.tpl.html', config.paths.partials + '/**/*.tpl.html'], ['partials'] )
+      html.on('change', function(event) {
+        log.notifyLiveReload(tinylr, event)
+      })
+
+  // CSS
+  var css = gulp.watch([ config.paths.css + '/**/*.css' ])
+      css.on('change', function(event) {
+        log.notifyLiveReload(tinylr, event)
+      })
+
+  // JS
+  var js = gulp.watch([ config.paths.js + '/**/*.js' ])
+      js.on('change', function(event) {
+        log.notifyLiveReload(tinylr, event)
+      })
+
+  // ES6
+  var es6 = gulp.watch([ config.paths.es6 + '/**/*.js'], ['babel'] )
+      es6.on('change', function(event) {
+        log.notifyLiveReload(tinylr, event)
+      })
+
 })
 
 gulp.task('default', [

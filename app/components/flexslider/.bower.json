@@ -1,6 +1,6 @@
 {
   "name": "flexslider",
-  "version": "2.6.0",
+  "version": "2.6.3",
   "homepage": "https://github.com/woothemes/FlexSlider",
   "authors": [
     "WooThemes <jeff@woothemes.com>"
@@ -29,11 +29,11 @@
   "dependencies": {
     "jquery": ">=1.11.3"
   },
-  "_release": "2.6.0",
+  "_release": "2.6.3",
   "_resolution": {
     "type": "version",
-    "tag": "2.6.0",
-    "commit": "9a419a096b779d74bb76bfb028b8a64d1a222ce1"
+    "tag": "2.6.3",
+    "commit": "0690ec27fbeaa8b99bf171e0836b2959ce9f08b9"
   },
   "_source": "https://github.com/woothemes/FlexSlider.git",
   "_target": "*",
